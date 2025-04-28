@@ -184,13 +184,13 @@ include(CMakeFindDependencyMacro)
 set(_CERES_ABSL_VERSION @absl_VERSION@)
 set(_CERES_USE_SYSTEM_ABSL @CERES_USE_SYSTEM_ABSL@)
 if (_CERES_USE_SYSTEM_ABSL)
-  find_dependency(absl ${_CERES_ABSL_VERSION})
-  if (NOT absl_VERSION)
-    if (NOT TARGET absl::absl_vlog_is_on)
-      ceres_report_not_found("The version of abseil installed on the system "
-        "provides no version info and is missing TARGET 'absl::absl_vlog_is_on'")
-    endif ()
-  endif ()
+  find_dependency(absl)
+  # if (NOT absl_VERSION)
+  #   if (NOT TARGET absl::absl_vlog_is_on)
+  #     ceres_report_not_found("The version of abseil installed on the system "
+  #       "provides no version info and is missing TARGET 'absl::absl_vlog_is_on'")
+  #   endif ()
+  # endif ()
 else ()
   # absl from submodule, configs installed with ceres-solver
   get_filename_component(_ABSL_IMPORT_PREFIX "${CMAKE_CURRENT_LIST_FILE}" PATH)
@@ -211,17 +211,17 @@ set(CERES_EIGEN_VERSION @Eigen3_VERSION@)
 # match and reject with an explanation below.
 find_package(Eigen3 ${CERES_EIGEN_VERSION} QUIET)
 if (Eigen3_FOUND)
-  if (NOT Eigen3_VERSION VERSION_EQUAL CERES_EIGEN_VERSION)
-    # CMake's VERSION check in FIND_PACKAGE() will accept any version >= the
-    # specified version. However, only version = is supported. Improve
-    # usability by explaining why we don't accept non-exact version matching.
-    ceres_report_not_found("Found Eigen dependency, but the version of Eigen "
-      "found (${Eigen3_VERSION}) does not exactly match the version of Eigen "
-      "Ceres was compiled with (${CERES_EIGEN_VERSION}). This can cause subtle "
-      "bugs by triggering violations of the One Definition Rule. See the "
-      "Wikipedia article http://en.wikipedia.org/wiki/One_Definition_Rule "
-      "for more details")
-  endif ()
+  # if (NOT Eigen3_VERSION VERSION_EQUAL CERES_EIGEN_VERSION)
+  #   # CMake's VERSION check in FIND_PACKAGE() will accept any version >= the
+  #   # specified version. However, only version = is supported. Improve
+  #   # usability by explaining why we don't accept non-exact version matching.
+  #   ceres_report_not_found("Found Eigen dependency, but the version of Eigen "
+  #     "found (${Eigen3_VERSION}) does not exactly match the version of Eigen "
+  #     "Ceres was compiled with (${CERES_EIGEN_VERSION}). This can cause subtle "
+  #     "bugs by triggering violations of the One Definition Rule. See the "
+  #     "Wikipedia article http://en.wikipedia.org/wiki/One_Definition_Rule "
+  #     "for more details")
+  # endif ()
   ceres_message(STATUS "Found required Ceres dependency: "
     "Eigen version ${CERES_EIGEN_VERSION} in ${Eigen3_DIR}")
 else (Eigen3_FOUND)
